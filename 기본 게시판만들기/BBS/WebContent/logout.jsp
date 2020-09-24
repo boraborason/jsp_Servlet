@@ -4,9 +4,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>JSP게시판 만들기</title>
+<title>Insert title here</title>
 </head>
 <body>
+	<%	//세션 빼앗기
+		session.invalidate();
+	%>
 	<script>
 		location.href = 'main.jsp';
 	</script>

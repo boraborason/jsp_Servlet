@@ -29,8 +29,8 @@
 		</div>
 		<div class="collapse navbar-collapse" id="bs-example-navar-collapsed-1">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="main.jsp">메인</a></li>
-				<li><a href="bbs.jsp">게시판</a></li>
+				<li><a href="main.jsp">메인</a></li>
+				<li class="active"><a href="bbs.jsp">게시판</a></li>
 			</ul>
 			
 		<%
@@ -66,6 +66,30 @@
 		%>	
 		</div>
 	</nav>
+	<!-- 게시판 폼 만들기 -->
+	<div class="container">
+		<div class="raw">
+			<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd;">
+				<thead>
+					<tr>
+						<td style="background-color: #eeeeee; text-align: center;">번호</td>
+						<td style="background-color: #eeeeee; text-align: center;">제목</td>
+						<td style="background-color: #eeeeee; text-align: center;">작성자</td>
+						<td style="background-color: #eeeeee; text-align: center;">작성일</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>헛</td>
+						<td>둘</td>
+						<td>셋</td>
+						<td>넷</td>
+					</tr>
+				</tbody>
+			</table>
+			<a href = "write.jsp" class="btn btn-primary pull-right">글쓰기</a>
+		</div>
+	</div>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>

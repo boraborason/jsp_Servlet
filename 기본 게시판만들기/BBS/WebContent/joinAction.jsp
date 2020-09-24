@@ -19,6 +19,18 @@
 <body>
 <!--회원가입 처리작업 페이지-->
 	<%
+		String userID = null;
+		if(session.getAttribute("userID") != null){			//"userID"가 null이 아니라는것 == 로그인 되어있다는것(로그인시,회원가입시 부여받음) 
+			userID = (String)session.getAttribute("userID"); //"userID"가 자신에게 할당된 세션을 userID에 담을 수 있도록한다.
+		}  
+		if(user != null){
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("이미 로그인 되어 있습니다.");
+			script.println("location.href = 'main.jsp'");
+			script.println("</script>");
+		}
+		
 		if(user.getUserID()==null || user.getUserPassword()==null || user.getUserName()==null || user.getUserGender()==null || user.getUserEmail()==null){
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
@@ -29,6 +41,7 @@
 			UserDAO userDAO = new UserDAO();
 			int result = userDAO.join(user); //사용자로 부터 입력을 받는거기떄문에 (dbX) user로 한번에 
 			if(result >= 0){
+				session.setAttribute("userID", user.getUserID());
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
 				script.println("location.href = 'main.jsp'");

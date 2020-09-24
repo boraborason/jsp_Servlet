@@ -10,6 +10,12 @@
 <title>JSP게시판 만들기</title>
 </head>
 <body>
+	<%	//로그인후 main페이지와 왔을 경우
+		String userID = null;
+		if(session.getAttribute("userID") != null){			//"userID"가 null이 아니라는것 == 로그인 되어있다는것(로그인시,회원가입시 부여받음) 
+			userID = (String)session.getAttribute("userID"); //"userID"가 자신에게 할당된 세션을 userID에 담을 수 있도록한다.
+		} 
+	%>
 	<nav class="nav navbar-default">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed"
@@ -24,8 +30,13 @@
 		<div class="collapse navbar-collapse" id="bs-example-navar-collapsed-1">
 			<ul class="nav navbar-nav">
 				<li><a href="main.jsp">메인</a></li>
-				<li><a href="bbs.jsp">게시판</a></li>
+				<li class="active"><a href="bbs.jsp">게시판</a></li>
 			</ul>
+			
+		<%
+		//userID에 세션값이 없을경우
+		if(userID == null) {
+		%>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle"
@@ -33,45 +44,46 @@
 						aria-expanded="false">접속하기<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="login.jsp">로그인</a></li>
-						<li class="active"><a href="join.jsp">회원가입</a></li>
+						<li><a href="join.jsp">회원가입</a></li>
 					</ul>
 				</li>
 			</ul>
+		<%
+		}else {
+		%>	
+			<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">회원관리<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="logout.jsp">로그아웃</a></li>
+					</ul>
+				</li>
+			</ul>
+		<%
+		}
+		%>	
 		</div>
-	</nav>  <!--네브바 고정-->
- 	<div class="container">
- 		<div class="col-lg-4"></div>
- 		<div class="col-lg-4">
- 			<div class="jumbotron" style="padding-top:20px;">
- 				<form action="joinAction.jsp" method="post">
- 					<h3 style="text-align: center;">회원가입화면</h3>
- 					<div class="form-group">
- 						<input type="text" class="form-control" placeholder="아이디" name="userID" maxlength="20">
- 					</div>
- 					<div class="form-group">
- 						<input type="password" class="form-control" placeholder="비밀번호" name="userPassword" maxlength="20">
- 					</div>
- 					<div class="form-group">
- 						<input type="text" class="form-control" placeholder="이름" name="userName" maxlength="20">
- 					</div>
- 					<div class="form-group" style="text-align:center;">
- 						<div class="btn-group" data-toggle="buttons">
- 							<label class="btn btn-primary active">
- 								<input type="radio" name="userGender" autocomplete="off" value="남자" checked>남자
- 							</label>
- 							<label class="btn btn-primary">
- 								<input type="radio" name="userGender" autocomplete="off" value="여자">여자
- 							</label>
- 						</div>
- 					</div>
- 					<div class="form-group">
- 						<input type="email" class="form-control" placeholder="email" name="userEmail" maxlength="20">
- 					</div>
- 					<input type="submit" class="btn btn-primary form-control" value="회원가입하기">
- 				</form>
- 			
- 			</div>
- 		</div>
+	</nav>
+	<!-- 게시판 폼 만들기 -->
+	<div class="container">
+		<div class="raw">
+			<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd;">
+				<thead>
+					<tr>
+						<td colspan="2" style="background-color: #eeeeee; text-align: center;">게시판 글쓰기 양식</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+			<a href = "write.jsp" class="btn btn-primary pull-right">글쓰기</a>
+		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
