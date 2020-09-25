@@ -40,6 +40,8 @@ public class UserDAO {
 					return 0;  //비번오류
 				}
 			}
+			return -1;  //아이디 없음
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("접속안됨2");

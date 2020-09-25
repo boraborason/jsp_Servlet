@@ -30,8 +30,14 @@
 		}
 		
 		UserDAO userDAO = new UserDAO();
-		int result = userDAO.login(user.getUserID(), user.getUserPassword()); //db에 있는 아이디,비번을 넣어야 하기 때문에 get한다
-		if(result == 1){
+		int result = userDAO.login(user.getUserID(), user.getUserPassword()); //사용자가 입력한 값을 get하여 매게변수로
+		if(user.getUserID()==null || user.getUserPassword()==null){
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('입력 안된 사항이 있습니다.')");
+			script.println("history.back()");
+			script.println("</script>");
+		}else if(result == 1){
 			//현재 접속한 회원의 고유아이디(세션)
 			//로그인성공시 세션부여해 관리시작
 			//userID값을 세션값으로 "userID"에 부여한다.
@@ -42,7 +48,7 @@
 			script.println("<script>");
 			script.println("location.href = 'main.jsp'");
 			script.println("</script>");
-		} else if(result == 0){
+		}else if(result == 0){
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert('비밀번호 오류입니다.')");

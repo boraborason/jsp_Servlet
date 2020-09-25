@@ -13,15 +13,15 @@
 	<nav class="nav navbar-default">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed"
-				data-toggle="collapsed" data-target="#bs-example-navar-collapsed-1"
+				data-toggle="collapse" data-target="#bs-example-navar-collapse-1"
 				area-expanded="false">
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
-			<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
 			</button>	
 			<a class="navbar-brand" href="main.jsp">JSP 게시판웹사이트</a>	
 		</div>
-		<div class="collapse navbar-collapse" id="bs-example-navar-collapsed-1">
+		<div class="collapse navbar-collapse" id="bs-example-navar-collapse-1">
 			<ul class="nav navbar-nav">
 				<li><a href="main.jsp">메인</a></li>
 				<li><a href="bbs.jsp">게시판</a></li>
@@ -39,10 +39,11 @@
 			</ul>
 		</div>
 	</nav>
+	<!-- 로그인폼 -->
  	<div class="container">
  		<div class="col-lg-4"></div>
  		<div class="col-lg-4">
- 			<div class="jumbotron" style="padding-top:20px;">
+ 			<div class="jumbotron" style="margin-top:20px;">
  				<form action="loginAction.jsp" method="post">
  					<h3 style="text-align: center;">로그인</h3>
  					<div class="form-group">
@@ -56,6 +57,7 @@
  			
  			</div>
  		</div>
+ 	<div class="col-lg-4"></div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
