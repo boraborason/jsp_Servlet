@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@page import="java.io.PrintWriter" %>
-<%@page import="bbs.Bbs" %>
-<%@page import="bbs.BbsDAO" %>
+<%@ page import="java.io.PrintWriter" %>
+<%@ page import="bbs.Bbs" %>    
+<%@ page import="bbs.BbsDAO" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,20 +17,23 @@
 		String userID = null;
 		if(session.getAttribute("userID") != null){			//"userID"가 null이 아니라는것 == 로그인 되어있다는것(로그인시,회원가입시 부여받음) 
 			userID = (String)session.getAttribute("userID"); //"userID"가 자신에게 할당된 세션을 userID에 담을 수 있도록한다.
-		}
+		} 
+		
 		if(userID==null){
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("alert('로그인하세요')");
-			script.println("location.href = 'bbs.jsp'");
+			script.println("location.href = 'login.jsp'");
 			script.println("</script>");
 		}
 		
+		//bbsID값이 잘 넘어왔을때 
 		int bbsID = 0;
 		if(request.getParameter("bbsID") != null){
 			bbsID = Integer.parseInt(request.getParameter("bbsID"));
+			System.out.println(bbsID+"UPDATE.JSP");
 		}
-		
+		//bbsID가 잘 넘어오지 않았을때
 		if(bbsID == 0){
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
@@ -38,8 +41,16 @@
 			script.println("location.href = 'bbs.jsp'");
 			script.println("</script>");
 		}
+		//현재 수정하려는글이 본인의 글인지 확인 (세션있는 값과 글 작성ID값이 같은지 비교)
+		Bbs bbs = new BbsDAO().getBbs(bbsID);
+		if(!userID.equals(bbs.getUserID())){
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('수정할 수 없습니다.')");
+			script.println("location.href = 'bbs.jsp'");
+			script.println("</script>");
+		}
 		
-		Bbs bbs = new BbsDAO().getBbs(bbsID); //유효한 글이면 해당 내용의 구체적인 글을 bbs에 가져온다.
 	%>
 	<nav class="nav navbar-default">
 		<div class="navbar-header">
@@ -57,25 +68,6 @@
 				<li><a href="main.jsp">메인</a></li>
 				<li class="active"><a href="bbs.jsp">게시판</a></li>
 			</ul>
-			
-		<%
-		//userID에 세션값이 없을경우
-		if(userID == null) {
-		%>
-			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" role="button" aria-haspopup="true"
-						aria-expanded="false">접속하기<span class="caret"></span></a>
-					<ul class="dropdown-menu">
-						<li><a href="login.jsp">로그인</a></li>
-						<li><a href="join.jsp">회원가입</a></li>
-					</ul>
-				</li>
-			</ul>
-		<%
-		}else {
-		%>	
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle"
@@ -85,51 +77,30 @@
 						<li><a href="logout.jsp">로그아웃</a></li>
 					</ul>
 				</li>
-			</ul>
-		<%
-		}
-		%>	
+			</ul>	
 		</div>
 	</nav>
-	<!-- 글내용 보여주기 -->
+	<!-- 수정처리 폼 -->
 	<div class="container">
-		<div class="row" style="margin-top:20px;">
-			<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd;">
-				<thead>
-					<tr>
-						<td colspan="3" style="background-color: #eeeeee; text-align: center;">글보기</td>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td style="width: 20%;">글제목</td>
-						<td colspan="2"><%=bbs.getBbsTitle()%></td>
-					</tr>
-					<tr>
-						<td>작성자</td>
-						<td colspan="2"><%=bbs.getUserID()%></td>
-					</tr>
-					<tr>
-						<td>작성일자</td>
-						<td colspan="2"><%=bbs.getBbsData().substring(0, 11) + bbs.getBbsData().substring(11, 13) +"시"+bbs.getBbsData().substring(14, 16) +"분" %></td>
-					</tr>
-					<tr>
-						<td>내용</td>
-						<td colspan="2" style="height: 200px; text-align:left;"><%=bbs.getBbsContent().replaceAll(" ", "&nbsp;").replaceAll(">", "&gt;").replaceAll("<", "&lt;").replaceAll("\n", "<br>")%></td>
-					</tr>
-				</tbody>
-			</table>
-			<a href = "bbs.jsp" class="btn btn-primary">목록</a>
-			<%
-				if(userID != null && userID.equals(bbs.getUserID())){  //본인이라면
-			%>
-				<a href = "update.jsp?bbsID=<%=bbsID%>" class="btn btn-primary">수정</a>  <!--해당 아이디를 매개변수로 가져갈 수 있도록 -->
-				<a onclick ="return confirm('삭제하시겠습니까?')" href = "deleteAction.jsp?bbsID=<%=bbsID%>" class="btn btn-primary">삭제</a>  <!--해당 아이디를 매개변수로 가져갈 수 있도록 -->
-			
-			<% 
-				}
-			%>	
-			<input type = "submit" class="btn btn-primary pull-right" value="글쓰기">
+		<div class="row">
+			<form method="post" action="updateAction.jsp?bbsID<%=bbsID%>">
+				<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd;">
+					<thead>
+						<tr>
+							<td colspan="2" style="background-color: #eeeeee; text-align: center;">게시판 수정</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="text" class="form-control" placeholder="제목" name="bbsTitle" maxlength="50" value= "<%=bbs.getBbsTitle()%>"></td>
+						</tr>
+						<tr>
+							<td><textarea class="form-control" placeholder="내용" name="bbsContent" maxlength="2048" style="height: 350px;"><%=bbs.getBbsContent()%></textarea></td>
+						</tr>
+					</tbody>
+				</table>
+				<input type = "submit" class="btn btn-primary pull-right" value="글수정">
+			</form>
 		</div>
 	</div>
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

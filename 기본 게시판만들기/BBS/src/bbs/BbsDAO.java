@@ -131,12 +131,36 @@ public class BbsDAO {
 		bbs.setBbsContent(rs.getString(5));
 		bbs.setBbsAvailable(rs.getInt(6));
 		return bbs;  //다 넣어서 반환함
-	}
+		
+		}
 	} catch (Exception e) {
 		e.printStackTrace();
-		System.out.println("에러");
-	}
+		}
 		return null; //해당 글이 존재하지 않는 경우
-		
+		}
+	//게시판 글을 수정하는 메서드
+	public int update (String bbsTitle, String bbsContent, int bbsID) {
+	String SQL = "UPDATE BBS SET bbsTitle = ?, bbsContent = ? WHERE bbsID = ?";	//특정한 아이디에 해당하는 제목과 내용 수정
+	try {
+		PreparedStatement pstmt = conn.prepareStatement(SQL);
+		pstmt.setString(1, bbsTitle);
+		pstmt.setString(2, bbsContent);
+		pstmt.setInt(3, bbsID);
+		return pstmt.executeUpdate();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+		return -1;	//db오류시
+	}
+	public int delete(int bbsID) {
+		String SQL = "UPDATE BBS SET bbsAvailable = 0 WHERE bbsID = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, bbsID);
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+			return -1;	//db오류시
 	}
 }
